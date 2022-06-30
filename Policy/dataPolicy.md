@@ -1,6 +1,6 @@
 # Privacy Policy
 
- TeaCoLi(Sejin Kwak, Jimin Kim, Seungyeon Oh, Seonghoon Jang, Hyemin Choi, Hyungseo Han) built the Girin app as a Free app. This SERVICE is provided by TeaCoLi at no cost and is intended for use as is.
+ I(Kangwook Park K) built the Midal app as a Free app. This SERVICE is provided by Kangwook Park K at no cost and is intended for use as is.
 
 This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
 
@@ -8,7 +8,7 @@ If you choose to use my Service, App have function that collect age and gender a
 
 ## Service Providers
 
-we are developer team in the Apple Developer Academy @ POSTECH. if you inquire about how app use your privacy data, I will closely check your question to satisfy your question
+I am in the Apple Developer Academy @ POSTECH. If you inquire about how app use your privacy data, I will closely check your question to satisfy your question
 
 ## Security
 
