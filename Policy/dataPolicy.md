@@ -4,7 +4,7 @@
 
 This page is used to inform visitors regarding my policies with the collection, use, and disclosure of Personal Information if anyone decided to use my Service.
 
-If you choose to use my Service, App have function that collect age and gender and record your intake our app user's data but data is not use or share your information with anyone described in this Privacy Policy. and this data will stay in your phone until you delete my App, so this data not tracked and collected by 3rd party company or other
+If you choose to use my Service, App have function that select college and department but data is not use or share your information with anyone described in this Privacy Policy. and this data will stay in your phone until you delete my App, so this data not tracked and collected by 3rd party company or other
 
 ## Service Providers
 
