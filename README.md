@@ -42,7 +42,6 @@ Insert gif or link to demo -->
 - SwiftSoup
 - Cocoapod
 - Sketch
-- [Github](https://github.com/rkddnr330/SwiftPractice) - 'ScholarshipDemo2'폴더에서 버전 관리
 
 
 ## :lock_with_ink_pen: License
