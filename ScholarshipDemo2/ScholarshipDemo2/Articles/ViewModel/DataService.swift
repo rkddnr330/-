@@ -29,11 +29,11 @@ class DataService: ObservableObject {
         
         // MARK: - 소속 학과 데이터
 
-        let articleURL = makeURL(department: department).0
-        let baseURL = makeURL(department: department).1
+        let articleURL = makeURL(of: department).0
+        let baseURL = makeURL(of: department).1
         
         if let articleURL = articleURL {
-            let allPosts = getAllPosts(from: articleURL)
+            let allPosts = getAllPosts(from: articleURL, className: "_artclTdTitle")
             guard let baseURL = baseURL else { return }
             
             generatePostList(from: allPosts, baseURL: baseURL)
@@ -41,45 +41,16 @@ class DataService: ObservableObject {
         
         // MARK: - 공홈 데이터
         
-        let officialURL = "https://www.pusan.ac.kr/kor/CMS/Board/Board.do"
-        let baseOfficialURL = URL(string:officialURL)
-        let offString = "https://www.pusan.ac.kr/kor/CMS/Board/Board.do?robot=Y&mCode=MN095&searchID=title&searchKeyword=장학&mgr_seq=3&mode=list&page=1"
-
-        guard let encodedOfficial = offString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else { return }
-        let offURL = URL(string: encodedOfficial)
+        /// post의 URL에서 공통된 부분.
+        /// 나중에 각 post의 뒷부분 URL을 가져와서 baseOfficialURL 뒤에 붙인다.
+        let baseOfficialURL = URL(string: "https://www.pusan.ac.kr/kor/CMS/Board/Board.do")
+        let officialURL = makeOfficialURL()
         
-        if let offURL = offURL{
-            do {
-                let websiteString = try String(contentsOf: offURL)
-                
-                let document = try SwiftSoup.parse(websiteString)
-                
-                
-                //                let articles = try document.getElementsByClass("item-list").select("article")
-                ///artclTdTitle 이라는 클래스를 가진 코드 불러오기
-                let articles = try document.getElementsByClass("stitle")
-                
-                for article in articles{
-                    let title = try article.select("a").first()?.text(trimAndNormaliseWhitespace: true) ?? ""
-                    
-                    guard let baseOfficialURL = baseOfficialURL else {
-                        return
-                    }
-                    
-                    let url = try baseOfficialURL.appendingPathComponent(article.select("a").attr("href"))
+        if let officialURL = officialURL{
+            let officialAllPosts = getAllPosts(from: officialURL, className: "stitle")
+            guard let baseOfficialURL = baseOfficialURL else { return }
 
-                    let changedUrl = URL(string: url.description.replacingOccurrences(of: "/%3F", with: "?"))
-                    
-                    let post = Article(title: title, url: changedUrl)
-                    if post.title.contains("장학") {
-                        self.officialList.append(post)
-                    }
-                }
-            }
-            
-            catch let error {
-                print(error)
-            }
+            generateOfficialList(from: officialAllPosts, baseURL: baseOfficialURL)
         }
     }
 }
@@ -88,7 +59,7 @@ class DataService: ObservableObject {
 
 extension DataService {
     
-    private func makeURL(department: String) -> (URL?, URL?) {
+    private func makeURL(of department: String) -> (URL?, URL?) {
         var selectedBaseURL: String = DataDemo().originURL["\(department)"]!
         let selectedDetailURL: String = DataDemo().detailURL["\(department)"]!
         
@@ -100,13 +71,21 @@ extension DataService {
         return (articleURL, baseURL)
     }
     
-    private func getAllPosts(from articleURL: URL) -> Elements {
+    private func getAllPosts(from articleURL: URL, className: String) -> Elements {
         do {
             let websiteString = try String(contentsOf: articleURL)
             let document = try SwiftSoup.parse(websiteString)
-            let articles = try document.getElementsByClass("_artclTdTitle")
+            let articles = try document.getElementsByClass(className)
             return articles
         } catch { return SwiftSoup.Elements.init() }
+    }
+    
+    private func makeOfficialURL() -> URL? {
+        let nonencodedURL = "https://www.pusan.ac.kr/kor/CMS/Board/Board.do?robot=Y&mCode=MN095&searchID=title&searchKeyword=장학&mgr_seq=3&mode=list&page=1"
+        let encodedURL = nonencodedURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let officialURL = URL(string: encodedURL ?? "https://www.pusan.ac.kr/kor/CMS/Board/Board.do")
+        
+        return officialURL
     }
     
     private func generatePostList(from allPosts: Elements, baseURL: URL) {
@@ -117,6 +96,18 @@ extension DataService {
                 let scholarshipPost = Article(title: title, url: url)
                 if scholarshipPost.title.contains("장학") { self.postList.append(scholarshipPost) }
             }
-        } catch { print("generate error") }
+        } catch { print("postList generation error") }
+    }
+    
+    private func generateOfficialList(from allPosts: Elements, baseURL: URL) {
+        do {
+            for eachPost in allPosts{
+                let title = try eachPost.select("a").first()?.text(trimAndNormaliseWhitespace: true) ?? ""
+                let url = try baseURL.appendingPathComponent(eachPost.select("a").attr("href"))
+                let changedUrl = URL(string: url.description.replacingOccurrences(of: "/%3F", with: "?"))
+                let scholarshipPost = Article(title: title, url: changedUrl)
+                if scholarshipPost.title.contains("장학") { self.officialList.append(scholarshipPost) }
+            }
+        } catch { print("officialList generation error")}
     }
 }
