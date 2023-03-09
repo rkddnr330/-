@@ -10,7 +10,6 @@ import SwiftSoup
 import SwiftUI
 
 class DataService: ObservableObject {
-
     @Published var postList = [Article]()
     @Published var officialList = [Article]()
     @AppStorage("department") var currentDepartment : String = "화공생명환경공학부 환경공학전공" {
@@ -33,10 +32,10 @@ class DataService: ObservableObject {
         let baseURL = makeURL(of: department).1
         
         if let articleURL = articleURL {
-            let allPosts = getAllPosts(from: articleURL, className: "_artclTdTitle")
-            guard let baseURL = baseURL else { return }
-            
-            generatePostList(from: allPosts, baseURL: baseURL)
+            getAllPosts(from: articleURL, className: "_artclTdTitle") { articles in
+                guard let baseURL = baseURL, let allPosts = articles  else { return }
+                self.generatePostList(from: allPosts, baseURL: baseURL)
+            }
         }
         
         // MARK: - 공홈 데이터
@@ -46,11 +45,11 @@ class DataService: ObservableObject {
         let baseOfficialURL = URL(string: "https://www.pusan.ac.kr/kor/CMS/Board/Board.do")
         let officialURL = makeOfficialURL()
         
-        if let officialURL = officialURL{
-            let officialAllPosts = getAllPosts(from: officialURL, className: "stitle")
-            guard let baseOfficialURL = baseOfficialURL else { return }
-
-            generateOfficialList(from: officialAllPosts, baseURL: baseOfficialURL)
+        if let officialURL = officialURL {
+            getAllPosts(from: officialURL, className: "stitle") { articles in
+                guard let baseOfficialURL = baseOfficialURL, let allPosts = articles else { return }
+                self.generateOfficialList(from: allPosts, baseURL: baseOfficialURL)
+            }
         }
     }
 }
@@ -58,26 +57,25 @@ class DataService: ObservableObject {
 // MARK: - fetchArticles에 쓰이는 함수들
 
 extension DataService {
-    
     private func makeURL(of department: String) -> (URL?, URL?) {
-        var selectedBaseURL: String = DataDemo().originURL["\(department)"]!
-        let selectedDetailURL: String = DataDemo().detailURL["\(department)"]!
+        var selectedBaseUrlString: String = DataDemo.originURL["\(department)"]!
+        let selectedDetailUrlString: String = DataDemo.detailURL["\(department)"]!
         
-        let baseURL = URL(string:selectedBaseURL)
+        let baseURL = URL(string:selectedBaseUrlString)
         
-        selectedBaseURL.append("\(selectedDetailURL)")
-        let articleURL = URL(string:selectedBaseURL)
+        selectedBaseUrlString.append("\(selectedDetailUrlString)")
+        let articleURL = URL(string:selectedBaseUrlString)
 
         return (articleURL, baseURL)
     }
     
-    private func getAllPosts(from articleURL: URL, className: String) -> Elements {
+    private func getAllPosts(from articleURL: URL, className: String, completionHandler: @escaping ((Elements?) -> Void)) {
         do {
             let websiteString = try String(contentsOf: articleURL)
             let document = try SwiftSoup.parse(websiteString)
             let articles = try document.getElementsByClass(className)
-            return articles
-        } catch { return SwiftSoup.Elements.init() }
+            completionHandler(articles)
+        } catch { completionHandler(SwiftSoup.Elements.init()) }
     }
     
     private func makeOfficialURL() -> URL? {

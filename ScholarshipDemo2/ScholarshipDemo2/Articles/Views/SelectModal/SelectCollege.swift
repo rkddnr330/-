@@ -12,7 +12,7 @@ struct SelectCollege: View {
     @EnvironmentObject var data : DataService
     @Binding var isPresenting: Bool
     @State var selectedCollege = "공과대학"
-    var collegeArr = DataDemo().collegeList
+    var collegeArr = DataDemo.collegeList
     
     // MARK: - 소속 대학 선택 화면
     

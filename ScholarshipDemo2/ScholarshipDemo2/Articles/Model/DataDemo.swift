@@ -8,9 +8,9 @@
 import Foundation
 
 struct DataDemo {
-    var collegeList: [String] = ["간호대학", "경영대학", "경제통상대학", "공과대학", "나노과학기술대학", "사범대학", "사회과학대학", "생명자원과학대학", "생활환경대학", "스포츠과학부", "약학대학", "예술대학", "의과대학", "인문대학", "자연과학대학", "정보의생명공학대학"]
+    static let collegeList: [String] = ["간호대학", "경영대학", "경제통상대학", "공과대학", "나노과학기술대학", "사범대학", "사회과학대학", "생명자원과학대학", "생활환경대학", "스포츠과학부", "약학대학", "예술대학", "의과대학", "인문대학", "자연과학대학", "정보의생명공학대학"]
     
-    var departmentList : [String:[String]] =
+    static let departmentList : [String:[String]] =
     ["간호대학":["간호학과"],
      "경영대학":["경영학과"],
      "경제통상대학":["경제학부","공공정책학부","관광컨벤션학과","국제학부","무역학부"],
@@ -30,7 +30,7 @@ struct DataDemo {
     
     /// // 이 표시 있는 건 공지사항에 '장학' 카테고리 따로 있음
     /// 없으면 공지사항에서 '장학' 키워드 직접 검색
-    var originURL: [String:String] =
+    static let originURL: [String:String] =
     ["간호학과":"https://nursing.pusan.ac.kr",//
      "경영학과":"https://biz.pusan.ac.kr",
      "경제학부":"https://pnuecon.pusan.ac.kr",
@@ -132,7 +132,7 @@ struct DataDemo {
      "정보컴퓨터공학부":"https://cse.pusan.ac.kr",
      "의생명융합공학부":"https://bce.pusan.ac.kr"]  //
     
-    var detailURL: [String:String] =
+    static let detailURL: [String:String] =
     ["간호학과":"/nursing/14523/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGbnVyc2luZyUyRjI1ODQlMkZhcnRjbExpc3QuZG8lM0ZzcmNoV3JkJTNEJTI1RUMlMjU5RSUyNUE1JTI1RUQlMjU5NSUyNTk5JTI2c3JjaENvbHVtbiUzRHNqJTI2YmJzT3BlbldyZFNlcSUzRCUyNmlzVmlld01pbmUlM0RmYWxzZSUyNmJic0NsU2VxJTNEJTI2",
      "경영학과":"/biz/48589/subview.do",
      "경제학부":"/pnuecon/16317/subview.do?enc=Zm5jdDF8QEB8JTJGYmJzJTJGcG51ZWNvbiUyRjMyMTAlMkZhcnRjbExpc3QuZG8lM0ZzcmNoV3JkJTNEJTI1RUMlMjU5RSUyNUE1JTI1RUQlMjU5NSUyNTk5JTI2c3JjaENvbHVtbiUzRHNqJTI2YmJzT3BlbldyZFNlcSUzRCUyNmlzVmlld01pbmUlM0RmYWxzZSUyNmJic0NsU2VxJTNEJTI2",
