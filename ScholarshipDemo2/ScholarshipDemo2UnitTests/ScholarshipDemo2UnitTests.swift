@@ -34,12 +34,6 @@ final class ScholarshipDemo2UnitTests: XCTestCase {
     }
     
     // sut :
-    // response의 statusCode가 200인지
-    func testURLSession_잘되는지() throws {
-        
-    }
-    
-    // sut :
     // HTML parsing 테스트
     func testElements에서_데이터_잘불러오는지() throws {
         
