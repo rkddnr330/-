@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct MoneyListCell: View {
-    var article: Article
+    var article: Post
     
     var body: some View {
         HStack() {

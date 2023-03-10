@@ -24,17 +24,13 @@ final class ScholarshipDemo2UnitTests: XCTestCase {
     func testPostList와_OfficialList가_잘_생성되는지() throws {
         // given
         let department = "화공생명환경공학부 환경공학전공"
-        let promise = expectation(description: "postList, officialList에 데이터 추가")
         
         // when
         sut.fetchPosts(department: department)
-        promise.fulfill()
         
         // then
-        XCTAssertGreaterThan(sut.postList.count, 0, "postList가 비었습니다.")
-        XCTAssertGreaterThan(sut.officialList.count, 0, "officialList가 비었습니다.")
-        
-        wait(for: [promise], timeout: 10)
+        XCTAssertGreaterThan(sut.departmentPosts.count, 0, "postList가 비었습니다.")
+        XCTAssertGreaterThan(sut.centralPosts.count, 0, "officialList가 비었습니다.")
     }
     
     func testPostList에_목록이_추가되는지() throws {

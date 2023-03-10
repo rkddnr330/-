@@ -8,6 +8,8 @@
 import Foundation
 
 struct DataDemo {
+    static let centralScholarshipUrlString = "https://www.pusan.ac.kr/kor/CMS/Board/Board.do?robot=Y&mCode=MN095&searchID=title&searchKeyword=장학&mgr_seq=3&mode=list&page=1"
+
     static let collegeList: [String] = ["간호대학", "경영대학", "경제통상대학", "공과대학", "나노과학기술대학", "사범대학", "사회과학대학", "생명자원과학대학", "생활환경대학", "스포츠과학부", "약학대학", "예술대학", "의과대학", "인문대학", "자연과학대학", "정보의생명공학대학"]
     
     static let departmentList : [String:[String]] =

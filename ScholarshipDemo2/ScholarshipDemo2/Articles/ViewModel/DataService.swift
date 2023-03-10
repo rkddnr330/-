@@ -9,9 +9,13 @@ import Foundation
 import SwiftSoup
 import SwiftUI
 
+enum Category {
+    case department, central
+}
+
 class DataService: ObservableObject {
-    @Published var postList = [Article]()
-    @Published var officialList = [Article]()
+    @Published var departmentPosts = [Post]()
+    @Published var centralPosts = [Post]()
     @AppStorage("department") var currentDepartment : String = "화공생명환경공학부 환경공학전공" {
         didSet { fetchPosts(department: currentDepartment) }
     }
@@ -23,18 +27,24 @@ class DataService: ObservableObject {
     func fetchPosts(department: String) {
         
         // fetch 전, 리스트 비우기
-        postList.removeAll()
-        officialList.removeAll()
+        departmentPosts.removeAll()
+        centralPosts.removeAll()
         
         // MARK: - 소속 학과 데이터
 
-        let articleURL = makeURL(of: department).0
-        let baseURL = makeURL(of: department).1
+        let departmentUrlString = DataDemo.originURL["\(department)"]!
+        let departmentScholarshipUrlString = DataDemo.originURL["\(department)"]! + DataDemo.detailURL["\(department)"]!
         
-        if let articleURL = articleURL {
-            getAllPosts(from: articleURL, className: "_artclTdTitle") { articles in
-                guard let baseURL = baseURL, let allPosts = articles  else { return }
-                self.generatePostList(from: allPosts, baseURL: baseURL)
+        let departmentUrl = URL(string: departmentUrlString)
+        let departmentScholarshipUrl = URL(string: departmentScholarshipUrlString)
+        
+        if let departmentScholarshipUrl = departmentScholarshipUrl {
+            getElements(from: departmentScholarshipUrl, className: "_artclTdTitle") { elements in
+                guard let departmentUrl = departmentUrl, let elements = elements  else { return }
+                self.generatePosts(
+                    of: .department,
+                    from: elements,
+                    baseUrl: departmentUrl)
             }
         }
         
@@ -42,13 +52,19 @@ class DataService: ObservableObject {
         
         /// post의 URL에서 공통된 부분.
         /// 나중에 각 post의 뒷부분 URL을 가져와서 baseOfficialURL 뒤에 붙인다.
-        let baseOfficialURL = URL(string: "https://www.pusan.ac.kr/kor/CMS/Board/Board.do")
-        let officialURL = makeOfficialURL()
+        let centralScholarshipUrlString = DataDemo.centralScholarshipUrlString
+            .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
-        if let officialURL = officialURL {
-            getAllPosts(from: officialURL, className: "stitle") { articles in
-                guard let baseOfficialURL = baseOfficialURL, let allPosts = articles else { return }
-                self.generateOfficialList(from: allPosts, baseURL: baseOfficialURL)
+        let centralScholarshipUrl = URL(string: centralScholarshipUrlString!)
+        let centralUrl = URL(string: "https://www.pusan.ac.kr/kor/CMS/Board/Board.do")
+        
+        if let centralScholarshipUrl = centralScholarshipUrl {
+            getElements(from: centralScholarshipUrl, className: "stitle") { elements in
+                guard let centralUrl = centralUrl, let elements = elements else { return }
+                self.generatePosts(
+                    of: .central,
+                    from: elements,
+                    baseUrl: centralUrl)
             }
         }
     }
@@ -57,55 +73,44 @@ class DataService: ObservableObject {
 // MARK: - fetchArticles에 쓰이는 함수들
 
 extension DataService {
-    private func makeURL(of department: String) -> (URL?, URL?) {
-        var selectedBaseUrlString: String = DataDemo.originURL["\(department)"]!
-        let selectedDetailUrlString: String = DataDemo.detailURL["\(department)"]!
-        
-        let baseURL = URL(string:selectedBaseUrlString)
-        
-        selectedBaseUrlString.append("\(selectedDetailUrlString)")
-        let articleURL = URL(string:selectedBaseUrlString)
-
-        return (articleURL, baseURL)
-    }
-    
-    private func getAllPosts(from articleURL: URL, className: String, completionHandler: @escaping ((Elements?) -> Void)) {
+    private func getElements(from departmentUrl: URL, className: String, completionHandler: @escaping ((Elements?) -> Void)) {
         do {
-            let websiteString = try String(contentsOf: articleURL)
+            let websiteString = try String(contentsOf: departmentUrl)
             let document = try SwiftSoup.parse(websiteString)
-            let articles = try document.getElementsByClass(className)
-            completionHandler(articles)
+            let elements = try document.getElementsByClass(className)
+            completionHandler(elements)
         } catch { completionHandler(SwiftSoup.Elements.init()) }
     }
     
-    private func makeOfficialURL() -> URL? {
-        let nonencodedURL = "https://www.pusan.ac.kr/kor/CMS/Board/Board.do?robot=Y&mCode=MN095&searchID=title&searchKeyword=장학&mgr_seq=3&mode=list&page=1"
-        let encodedURL = nonencodedURL.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        let officialURL = URL(string: encodedURL ?? "https://www.pusan.ac.kr/kor/CMS/Board/Board.do")
-        
-        return officialURL
-    }
-    
-    private func generatePostList(from allPosts: Elements, baseURL: URL) {
+    private func generatePosts(of category: Category, from elements: Elements, baseUrl: URL) {
         do {
-            for eachPost in allPosts {
-                let title = try eachPost.select("a").first()?.text(trimAndNormaliseWhitespace: true) ?? ""
-                let url = try baseURL.appendingPathComponent(eachPost.select("a").attr("href"))
-                let scholarshipPost = Article(title: title, url: url)
-                if scholarshipPost.title.contains("장학") { self.postList.append(scholarshipPost) }
+            for element in elements {
+                let title = try element
+                    .select("a")
+                    .first()?
+                    .text(trimAndNormaliseWhitespace: true) ?? ""
+                let url = try baseUrl.appendingPathComponent(element
+                    .select("a")
+                    .attr("href"))
+                
+                switch category {
+                case .department:
+                    let post = Post(title, url)
+                    if post.title.contains("장학") {
+                        self.departmentPosts.append(post)
+                    }
+                case .central:
+                    let centralUrl = URL(string: url
+                        .description
+                        .replacingOccurrences(
+                            of: "/%3F",
+                            with: "?"))
+                    let post = Post(title, centralUrl)
+                    if post.title.contains("장학") {
+                        self.centralPosts.append(post)
+                    }
+                }
             }
         } catch { print("postList generation error") }
-    }
-    
-    private func generateOfficialList(from allPosts: Elements, baseURL: URL) {
-        do {
-            for eachPost in allPosts{
-                let title = try eachPost.select("a").first()?.text(trimAndNormaliseWhitespace: true) ?? ""
-                let url = try baseURL.appendingPathComponent(eachPost.select("a").attr("href"))
-                let changedUrl = URL(string: url.description.replacingOccurrences(of: "/%3F", with: "?"))
-                let scholarshipPost = Article(title: title, url: changedUrl)
-                if scholarshipPost.title.contains("장학") { self.officialList.append(scholarshipPost) }
-            }
-        } catch { print("officialList generation error")}
     }
 }

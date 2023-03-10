@@ -7,8 +7,13 @@
 
 import Foundation
 
-struct Article: Identifiable, Hashable{
+struct Post: Identifiable, Hashable{
     let id = UUID().uuidString
     var title: String
     var url : URL?
+    
+    init(_ title: String, _ url: URL? = nil) {
+        self.title = title
+        self.url = url
+    }
 }
