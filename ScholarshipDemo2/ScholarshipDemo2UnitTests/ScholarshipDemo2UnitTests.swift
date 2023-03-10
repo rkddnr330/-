@@ -33,7 +33,25 @@ final class ScholarshipDemo2UnitTests: XCTestCase {
         XCTAssertGreaterThan(sut.centralPosts.count, 0, "officialList가 비었습니다.")
     }
     
-    func testPostList에_목록이_추가되는지() throws {
+    // sut :
+    // response의 statusCode가 200인지
+    func testURLSession_잘되는지() throws {
+        
+    }
+    
+    // sut :
+    // HTML parsing 테스트
+    func testElements에서_데이터_잘불러오는지() throws {
+        
+    }
+    
+    // sut : DataService
+    func test학과_변경_잘되는지() throws {
+        
+    }
+    
+    // sut : DataService
+    func test변경된_데이터가_Posts에_추가되는지() throws {
         // given
         
     }
