@@ -22,7 +22,7 @@ class DataService: ObservableObject {
     
     init() { fetchPosts(department: currentDepartment) }
 
-    // MARK: - fetchArticles 함수
+    // MARK: - fetchPosts 함수
     
     func fetchPosts(department: String) {
         
@@ -64,15 +64,16 @@ class DataService: ObservableObject {
             }
         }
     }
-}
+    
+    // MARK: - fetchPosts에 쓰이는 함수들
 
-// MARK: - fetchArticles에 쓰이는 함수들
-
-extension DataService {
-    // TODO: 1. Alamofire 사용, 2. 의존성 주입
+    var urlSession: URLSessionProtocol = URLSession.shared
+    
+    // TODO: 1.Alamofire 사용, 2.의존성 주입(O), 3.에러 핸들링
     private func getElements(from urlString: String, className: String, completionHandler: @escaping ((Elements?) -> Void)) {
-        let url = URL(string: urlString)!
-        let dataTask = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        guard let url = URL(string: urlString) else { return }
+        
+        let dataTask = urlSession.dataTask(with: url) { (data, response, error) in
             guard let data = data else {
                 completionHandler(nil)
                 return
