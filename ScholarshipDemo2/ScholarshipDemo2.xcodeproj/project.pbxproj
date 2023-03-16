@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		77571DB8286B83110003A9A5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 77571DBA286B83110003A9A5 /* InfoPlist.strings */; };
-		775A8D81286560CF00E33AE8 /* DataDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775A8D80286560CF00E33AE8 /* DataDemo.swift */; };
+		775A8D81286560CF00E33AE8 /* PNUData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775A8D80286560CF00E33AE8 /* PNUData.swift */; };
 		77B50CDE286303EA00254D34 /* MoneyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B50CDD286303EA00254D34 /* MoneyView.swift */; };
 		77B50CE028632C5900254D34 /* MoneyListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B50CDF28632C5900254D34 /* MoneyListCell.swift */; };
 		77B50CE22864368900254D34 /* AppStorageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B50CE12864368900254D34 /* AppStorageTest.swift */; };
@@ -42,7 +42,7 @@
 		4466982F160822948429EFDB /* Pods-ScholarshipDemo2.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScholarshipDemo2.release.xcconfig"; path = "Target Support Files/Pods-ScholarshipDemo2/Pods-ScholarshipDemo2.release.xcconfig"; sourceTree = "<group>"; };
 		77571DB9286B83110003A9A5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		77571DBB286B832D0003A9A5 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		775A8D80286560CF00E33AE8 /* DataDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataDemo.swift; sourceTree = "<group>"; };
+		775A8D80286560CF00E33AE8 /* PNUData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PNUData.swift; sourceTree = "<group>"; };
 		77B50CDD286303EA00254D34 /* MoneyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyView.swift; sourceTree = "<group>"; };
 		77B50CDF28632C5900254D34 /* MoneyListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyListCell.swift; sourceTree = "<group>"; };
 		77B50CE12864368900254D34 /* AppStorageTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageTest.swift; sourceTree = "<group>"; };
@@ -95,7 +95,7 @@
 		772C2918285B3E580027C97D /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				775A8D80286560CF00E33AE8 /* DataDemo.swift */,
+				775A8D80286560CF00E33AE8 /* PNUData.swift */,
 				77E6FBC1284F63EA007342C6 /* Post.swift */,
 			);
 			path = Model;
@@ -357,7 +357,7 @@
 				77EE3A8229C1A2FB00089B5E /* URLSessionProtocol.swift in Sources */,
 				77B50CED28645C6800254D34 /* SelectDepartment.swift in Sources */,
 				77B50CE22864368900254D34 /* AppStorageTest.swift in Sources */,
-				775A8D81286560CF00E33AE8 /* DataDemo.swift in Sources */,
+				775A8D81286560CF00E33AE8 /* PNUData.swift in Sources */,
 				77F66C8A289BBACE0008053C /* TutorialPage.swift in Sources */,
 				77B50CE82864508000254D34 /* TutorialView.swift in Sources */,
 				77B50CE028632C5900254D34 /* MoneyListCell.swift in Sources */,

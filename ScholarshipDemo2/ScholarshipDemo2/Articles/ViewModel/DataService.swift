@@ -32,8 +32,8 @@ class DataService: ObservableObject {
         
         // MARK: - 소속 학과 데이터
 
-        let departmentUrlString = DataDemo.originURL["\(department)"]!
-        let departmentScholarshipUrlString = DataDemo.originURL["\(department)"]! + DataDemo.detailURL["\(department)"]!
+        let departmentUrlString = PNUData.originURL["\(department)"]!
+        let departmentScholarshipUrlString = PNUData.originURL["\(department)"]! + PNUData.detailURL["\(department)"]!
         let departmentUrl = URL(string: departmentUrlString)
 
         getElements(from: departmentScholarshipUrlString, className: "_artclTdTitle") { elements in
@@ -50,7 +50,7 @@ class DataService: ObservableObject {
         
         /// post의 URL에서 공통된 부분.
         /// 나중에 각 post의 뒷부분 URL을 가져와서 baseOfficialURL 뒤에 붙인다.
-        let centralScholarshipUrlString = DataDemo.centralScholarshipUrlString
+        let centralScholarshipUrlString = PNUData.centralScholarshipUrlString
             .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let centralUrl = URL(string: "https://www.pusan.ac.kr/kor/CMS/Board/Board.do")
         
