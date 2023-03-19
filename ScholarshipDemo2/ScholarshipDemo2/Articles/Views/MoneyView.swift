@@ -59,11 +59,11 @@ struct MoneyView: View {
     
     // MARK: - 소속 학과 섹션의 검색 결과
     
-    private var searchResults : [Article] {
+    private var searchResults : [Post] {
         if searchText.isEmpty{
-            return data.postList
+            return data.departmentPosts
         } else {
-            return data.postList.filter({
+            return data.departmentPosts.filter({
                 $0.title.lowercased().localizedStandardContains(searchText.lowercased())
             })
         }
@@ -71,11 +71,11 @@ struct MoneyView: View {
     
     // MARK: - 학교 공홈 섹션의 검색 결과
     
-    private var searchOfficialResults : [Article] {
+    private var searchOfficialResults : [Post] {
         if searchText.isEmpty{
-            return data.officialList
+            return data.centralPosts
         } else {
-            return data.officialList.filter({
+            return data.centralPosts.filter({
                 $0.title.lowercased().localizedStandardContains(searchText.lowercased())
             })
         }

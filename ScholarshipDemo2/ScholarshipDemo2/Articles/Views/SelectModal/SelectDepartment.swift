@@ -13,7 +13,7 @@ struct SelectDepartment: View {
     @Binding var isPresenting: Bool
     @Binding var selectedCollege: String
     @State private var selectedDepartment = "화공생명환경공학부 환경공학전공"
-    var departmentArr = DataDemo().departmentList
+    var departmentArr = PNUData.departmentList
     
     // MARK: - 소속 학과 선택 화면
     
